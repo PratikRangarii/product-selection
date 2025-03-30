@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Selection</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #f9f9f9;
+      }
+      .container {
+        max-width: 400px;
+        margin: 20px auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .bogo-text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: bold;
+        color: #ff6b81;
+        position: relative;
+      }
+      .bogo-text::before,
+      .bogo-text::after {
+        content: "";
+        flex-grow: 1;
+        height: 1px;
+        background-color: #ccc;
+        margin: 0 10px;
+      }
+      .box {
+        border: 2px solid #c8c8c8;
+        padding: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        border-radius: 1px;
+        margin-top: 20px;
+      }
+      .box-header1 {
+        display: flex;
+        justify-content: space-between;
+      }
+      .box-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .box h3 {
+        margin: 0;
+        font-weight: 600;
+      }
+      .discount {
+        background-color: #ff6b81;
+        color: white;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-weight: 200;
+        font-size: 12px;
+      }
+      .box-price-text {
+        font-weight: 400;
+        font-size: 14px;
+      }
+      .box-price {
+        font-weight: 600;
+      }
+      .del-text-price {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .del-text-price1 {
+        color: #c8c8c8;
+        font-size: 12px;
+      }
+      .content {
+        display: none;
+        margin-top: 10px;
+        transition: 1s linear;
+      }
+      .total {
+        display: flex;
+        justify-content: space-between;
+      }
+      .color-text {
+        color: #ff6b81;
+      }
+
+      /* Add to cart button */
+      .button-checkout {
+        background-color: #ff6b81;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 2px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 400px;
+      }
+      select {
+        padding: 5px;
+        margin: 5px;
+      }
+      .active {
+        background-color: #ffe6ea;
+        border: 2px solid #ff6b81;
+        /* transition: 1s; */
+      }
+      input[type="radio"] {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #c8c8c8; /* Outer circle color */
+        border-radius: 50%;
+        outline: none;
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+      }
+
+      input[type="radio"]:checked::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        background-color: #ff6b81; /* Inner dot color */
+        border: 1px solid #ff6b81;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .text-italic {
+        margin-top: 10px;
+        color: #c8c8c8;
+        font-size: 12px;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      /* Most Popular text*/
+      .ribbon {
+        position: relative;
+        background: #ff6b81;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 5px 12px;
+        text-transform: uppercase;
+        border-radius: 2px;
+        transform: rotate(0deg);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        width: 120px;
+        left: 244px;
+        top: -20px;
+      }
+
+      /* Droppdown Div */
+      .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0px;
+      }
+
+      .option-row {
+        display: flex;
+        align-items: center;
+        gap: 0px;
+        justify-content: center;
+      }
+
+      .option-number {
+        font-weight: 200;
+        font-size: 14px;
+        color: #333;
+        width: 20px;
+        text-align: center;
+      }
+
+      .option {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .dropdown-label {
+        font-size: 14px;
+        font-weight: 200;
+        color: #333;
+        padding: 4px 10px;
+        border-radius: 5px;
+        display: block;
+        text-align: left;
+      }
+
+      .dropdown {
+        width: 120px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="bogo-text">YAY! It's BOGO</h2>
+
+      <div class="box" onclick="toggleBox(1)">
+        <div class="box-header1">
+          <div class="box-header">
+            <input
+              type="radio"
+              name="selection"
+              id="radio1"
+              onclick="toggleBox(1)"
+            />
+            <div>
+              <h3>1 Unit <span class="discount">10% Off</span></h3>
+              <span class="box-price-text">Standard Price</span>
+            </div>
+          </div>
+          <div class="del-text-price">
+            <span class="box-price">$10.00 USD</span>
+            <span class="del-text-price1"><del>$24.00 USD</del></span>
+          </div>
+        </div>
+
+        <!-- Dropdown section -->
+        <div class="content" id="box1">
+          <div class="options-container">
+            <div class="option-row">
+              <span class="option-number">#1</span>
+              <div class="option">
+                <label class="dropdown-label">Size</label>
+                <select class="dropdown">
+                  <option>S</option>
+                  <option>M</option>
+                  <option>L</option>
+                </select>
+              </div>
+
+              <div class="option">
+                <label class="dropdown-label">Color</label>
+                <select class="dropdown">
+                  <option>Black</option>
+                  <option>Red</option>
+                  <option>Blue</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box" onclick="toggleBox(2)">
+        <div class="ribbon">MOST POPULAR</div>
+        <div class="box-header1">
+          <div class="box-header">
+            <input
+              type="radio"
+              name="selection"
+              id="radio2"
+              onclick="toggleBox(2)"
+            />
+            <h3>2 Units <span class="discount">20% Off</span></h3>
+          </div>
+          <div class="del-text-price">
+            <span class="box-price">$18.00 USD</span>
+            <span class="del-text-price1"><del>$24.00 USD</del></span>
+          </div>
+        </div>
+
+        <!-- Dropdown section -->
+        <div class="content" id="box2">
+          <div class="options-container">
+            <div class="option-row">
+              <span class="option-number">#1</span>
+              <div class="option">
+                <label class="dropdown-label">Size</label>
+                <select class="dropdown">
+                  <option>S</option>
+                  <option>M</option>
+                  <option>L</option>
+                </select>
+              </div>
+
+              <div class="option">
+                <label class="dropdown-label">Color</label>
+                <select class="dropdown">
+                  <option>Black</option>
+                  <option>Red</option>
+                  <option>Blue</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="option-row">
+              <span class="option-number">#2</span>
+              <div class="option">
+                <select class="dropdown">
+                  <option>S</option>
+                  <option>M</option>
+                  <option>L</option>
+                </select>
+              </div>
+
+              <div class="option">
+                <select class="dropdown">
+                  <option>Black</option>
+                  <option>Red</option>
+                  <option>Blue</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box" onclick="toggleBox(3)">
+        <div class="box-header1">
+          <div class="box-header">
+            <input
+              type="radio"
+              name="selection"
+              id="radio3"
+              onclick="toggleBox(3)"
+            />
+            <h3>3 Units <span class="discount">30% Off</span></h3>
+          </div>
+          <div class="del-text-price">
+            <span class="box-price">$24.00 USD</span>
+            <span class="del-text-price1"><del>$24.00 USD</del></span>
+          </div>
+        </div>
+
+        <!-- Dropdown section -->
+        <div class="content" id="box3">
+          <div class="options-container">
+            <div class="option-row">
+              <span class="option-number">#1</span>
+              <div class="option">
+                <label class="dropdown-label">Size</label>
+                <select class="dropdown">
+                  <option>S</option>
+                  <option>M</option>
+                  <option>L</option>
+                </select>
+              </div>
+
+              <div class="option">
+                <label class="dropdown-label">Color</label>
+                <select class="dropdown">
+                  <option>Black</option>
+                  <option>Red</option>
+                  <option>Blue</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="option-row">
+              <span class="option-number">#2</span>
+              <div class="option">
+                <select class="dropdown">
+                  <option>S</option>
+                  <option>M</option>
+                  <option>L</option>
+                </select>
+              </div>
+
+              <div class="option">
+                <select class="dropdown">
+                  <option>Black</option>
+                  <option>Red</option>
+                  <option>Blue</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="option-row">
+              <span class="option-number">#3</span>
+              <div class="option">
+                <select class="dropdown">
+                  <option>S</option>
+                  <option>M</option>
+                  <option>L</option>
+                </select>
+              </div>
+
+              <div class="option">
+                <select class="dropdown">
+                  <option>Black</option>
+                  <option>Red</option>
+                  <option>Blue</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Price Section -->
+      <div class="total">
+        <p class="color-text">Free Delivery</p>
+        <p>Total: $18.00 USD</p>
+      </div>
+
+      <!-- button section -->
+      <div>
+        <button class="button-checkout">+ Add to Cart</button>
+        <i class="text-italic">@ Powered by Pumper</i>
+      </div>
+    </div>
+
+    <script>
+      function toggleBox(boxNumber) {
+        document
+          .querySelectorAll(".content")
+          .forEach((el) => (el.style.display = "none"));
+        document
+          .querySelectorAll(".box")
+          .forEach((el) => el.classList.remove("active"));
+
+        let content = document.getElementById(`box${boxNumber}`);
+        let box = document.querySelector(`.box:nth-child(${boxNumber + 1})`);
+        let radio = document.getElementById(`radio${boxNumber}`);
+        let price = box.querySelector(".box-price").textContent; // Get selected box price
+
+        content.style.display = "block";
+        box.classList.add("active");
+        radio.checked = true;
+
+        // Update total price
+        document.querySelector(
+          ".total p:last-child"
+        ).textContent = `Total: ${price}`;
+      }
+      window.onload = function () {
+        toggleBox(2);
+      };
+    </script>
+  </body>
+</html>
